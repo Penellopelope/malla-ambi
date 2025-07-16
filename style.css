@@ -32,3 +32,21 @@ h1 {
 .OB { background-color: #d0f0c0; }
 .G { background-color: #cce5ff; }
 .EL { background-color: #ffe0b2; }
+
+.pendiente {
+  border: 2px solid #ccc;
+}
+.en-curso {
+  background-color: #fff59d !important;
+  border: 2px solid #fbc02d;
+}
+.aprobado {
+  background-color: #a5d6a7 !important;
+  border: 2px solid #388e3c;
+  text-decoration: line-through;
+}
+.planeado {
+  background-color: #b3e5fc !important;
+  border: 2px dashed #0288d1;
+}
+
