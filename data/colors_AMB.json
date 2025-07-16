@@ -1,1 +1,5 @@
-
+{
+  "OB": ["#4CAF50", "Obligatorio"],
+  "G": ["#03A9F4", "General"],
+  "EL": ["#FF9800", "Electivo"]
+}
