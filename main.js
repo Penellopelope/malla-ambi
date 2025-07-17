@@ -12,7 +12,6 @@ async function cargarDatos() {
   data = await resMalla.json();
   colors = await resColors.json();
 
-  // Restaurar progreso guardado
   const saved = localStorage.getItem('estadoCursos');
   if (saved) estadoCursos = JSON.parse(saved);
 
@@ -48,10 +47,8 @@ function generarMalla() {
         divCurso.classList.add('relevante'); // 🔥
       }
 
-      // Estado inicial
       if (!estadoCursos[codigo]) estadoCursos[codigo] = 'P';
 
-      // Si no tiene prerequisitos, desbloqueado
       if (prereq.length === 0) {
         divCurso.classList.add('desbloqueado');
       }
@@ -64,7 +61,7 @@ function generarMalla() {
         guardarProgreso();
       });
 
-      // Hover para resaltar hijos desbloqueables
+      // Hover para resaltar los hijos desbloqueables
       divCurso.addEventListener('mouseenter', () => {
         resaltarHijos(codigo, true);
       });
@@ -79,25 +76,23 @@ function generarMalla() {
   }
 }
 
-// Guardar progreso en el navegador
+// Guardar progreso
 function guardarProgreso() {
   localStorage.setItem('estadoCursos', JSON.stringify(estadoCursos));
 }
 
-// Contar cuántos cursos desbloquea este
+// Contar cuántos cursos dependen de este
 function contarHijos(cod) {
   let count = 0;
   Object.values(data).forEach(cursos => {
     cursos.forEach(curso => {
-      if (curso[5].includes(cod)) {
-        count++;
-      }
+      if (curso[5].includes(cod)) count++;
     });
   });
   return count;
 }
 
-// Resalta o quita el resaltado de hijos de un curso
+// Función para resaltar cursos desbloqueados por otro
 function resaltarHijos(codigo, resaltar) {
   Object.values(data).forEach(cursos => {
     cursos.forEach(curso => {
@@ -111,7 +106,7 @@ function resaltarHijos(codigo, resaltar) {
   });
 }
 
-// Actualiza visualmente todos los cursos según estado
+// Actualizar colores y estados visuales
 function actualizarColores() {
   document.querySelectorAll('.curso').forEach(div => {
     const codigo = div.dataset.codigo;
@@ -130,7 +125,7 @@ function actualizarColores() {
   });
 }
 
-// Buscar curso por su código
+// Buscar curso por código
 function buscarCursoPorCodigo(cod) {
   for (let key in data) {
     const encontrado = data[key].find(c => c[1] === cod);
