@@ -1,40 +1,76 @@
 body {
-  font-family: sans-serif;
-  background: #f2f2f2;
-  padding: 20px;
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background-color: #1f1f1f;
+  color: #fff;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
+  color: #88e0ef;
 }
 
-#malla {
+.container {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 1rem;
   justify-content: center;
 }
 
 .ciclo {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  border-radius: 8px;
+  background-color: #292929;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 240px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.ciclo h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #ffc107;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
 }
 
 .curso {
-  margin: 5px 0;
-  padding: 6px;
-  border-radius: 4px;
+  background-color: #333;
+  border-left: 6px solid #555;
+  border-radius: 8px;
+  padding: 0.7rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
-.OB { background-color: #4CAF50; color: white; }
-.G { background-color: #03A9F4; color: white; }
-.EL { background-color: #FF9800; color: white; }
+.curso:hover {
+  transform: scale(1.03);
+  background-color: #444;
+}
 
-.aprobado { outline: 3px solid green; }
-.bloqueado { opacity: 0.4; }
+.curso.aprobado {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.curso.en-curso {
+  background-color: #FFC107;
+  color: #000;
+}
+
+.curso.pendiente {
+  background-color: #607D8B;
+  color: white;
+}
+
+.curso.desbloqueado {
+  border-left-color: #03A9F4;
+}
+
+.curso.relevante::after {
+  content: "🔥";
+  margin-left: 5px;
+}
