@@ -1,52 +1,40 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f7fa;
+  font-family: sans-serif;
+  background: #f2f2f2;
+  padding: 20px;
   color: #333;
-  margin: 0;
-  padding: 1rem;
 }
+
 h1 {
   text-align: center;
-  color: #2c7a7b;
+  margin-bottom: 40px;
 }
+
 #malla {
   display: flex;
   flex-wrap: wrap;
+  gap: 16px;
   justify-content: center;
-  gap: 2rem;
 }
-.semestre {
-  background-color: #ffffff;
+
+.ciclo {
+  background: white;
   border: 1px solid #ccc;
-  padding: 1rem;
+  padding: 10px;
+  width: 200px;
   border-radius: 8px;
-  width: 300px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 .curso {
-  padding: 0.5rem;
-  margin: 0.5rem 0;
+  margin: 5px 0;
+  padding: 6px;
   border-radius: 4px;
   cursor: pointer;
 }
-.OB { background-color: #d0f0c0; }
-.G { background-color: #cce5ff; }
-.EL { background-color: #ffe0b2; }
 
-.pendiente {
-  border: 2px solid #ccc;
-}
-.en-curso {
-  background-color: #fff59d !important;
-  border: 2px solid #fbc02d;
-}
-.aprobado {
-  background-color: #a5d6a7 !important;
-  border: 2px solid #388e3c;
-  text-decoration: line-through;
-}
-.planeado {
-  background-color: #b3e5fc !important;
-  border: 2px dashed #0288d1;
-}
+.OB { background-color: #4CAF50; color: white; }
+.G { background-color: #03A9F4; color: white; }
+.EL { background-color: #FF9800; color: white; }
 
+.aprobado { outline: 3px solid green; }
+.bloqueado { opacity: 0.4; }
