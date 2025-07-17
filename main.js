@@ -1,53 +1,34 @@
-const ESTADOS = ['pendiente', 'en-curso', 'aprobado', 'planeado'];
+const malla = document.getElementById('malla');
 
-async function cargarMalla() {
-  const carrera = new URLSearchParams(window.location.search).get('m') || 'AMB';
-  const dataRes = await fetch(`data/data_${carrera}.json`);
-  const colorRes = await fetch(`data/colors_${carrera}.json`);
-  const data = await dataRes.json();
-  const colors = await colorRes.json();
-  const contenedor = document.getElementById('malla');
+async function cargarData() {
+  const cursosRes = await fetch('data/data_AMB.json');
+  const colorsRes = await fetch('data/colors_AMB.json');
 
-  const estadoGuardado = JSON.parse(localStorage.getItem('estadoCursos') || '{}');
+  const cursos = await cursosRes.json();
+  const colores = await colorsRes.json();
 
-  Object.keys(data).forEach((sem) => {
-    const divSemestre = document.createElement('div');
-    divSemestre.className = 'semestre';
-    const h2 = document.createElement('h2');
-    h2.textContent = sem.toUpperCase();
-    divSemestre.appendChild(h2);
+  cursos.forEach((ciclo, index) => {
+    const divCiclo = document.createElement('div');
+    divCiclo.classList.add('ciclo');
+    const titulo = document.createElement('h3');
+    titulo.textContent = `S${index + 1}`;
+    divCiclo.appendChild(titulo);
 
-    data[sem].forEach((curso) => {
-      const codigo = curso[1];
-      const nombre = curso[0];
-      const tipo = curso[4];
-      const requisitos = curso[5];
-
+    ciclo.forEach(curso => {
       const divCurso = document.createElement('div');
-      divCurso.className = `curso ${tipo}`;
-
-      const estado = estadoGuardado[codigo] || 'pendiente';
-      divCurso.classList.add(estado);
-
-      divCurso.textContent = `${codigo} - ${nombre}`;
-      divCurso.title = requisitos.length > 0 ? `Requiere: ${requisitos.join(', ')}` : "Sin requisitos";
+      divCurso.classList.add('curso', curso.tipo);
+      divCurso.textContent = `${curso.codigo} - ${curso.nombre}`;
+      divCurso.dataset.codigo = curso.codigo;
 
       divCurso.addEventListener('click', () => {
-        let actual = estadoGuardado[codigo] || 'pendiente';
-        let nextIndex = (ESTADOS.indexOf(actual) + 1) % ESTADOS.length;
-        let next = ESTADOS[nextIndex];
-
-        ESTADOS.forEach(est => divCurso.classList.remove(est));
-        divCurso.classList.add(next);
-        estadoGuardado[codigo] = next;
-        localStorage.setItem('estadoCursos', JSON.stringify(estadoGuardado));
+        divCurso.classList.toggle('aprobado');
       });
 
-      divSemestre.appendChild(divCurso);
+      divCiclo.appendChild(divCurso);
     });
 
-    contenedor.appendChild(divSemestre);
+    malla.appendChild(divCiclo);
   });
 }
 
-cargarMalla();
+cargarData();
