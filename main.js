@@ -1,34 +1,118 @@
-const malla = document.getElementById('malla');
+const CICLOS = 10;
+const mallaDiv = document.getElementById('malla');
 
-async function cargarData() {
-  const cursosRes = await fetch('data/data_AMB.json');
-  const colorsRes = await fetch('data/colors_AMB.json');
+let data = {};
+let colors = {};
+let estadoCursos = {}; // Guardar estado: Aprobado, En curso, Pendiente
 
-  const cursos = await cursosRes.json();
-  const colores = await colorsRes.json();
+// Cargar archivos JSON
+async function cargarDatos() {
+  const resMalla = await fetch('data/data_AMB.json');
+  const resColors = await fetch('data/colors_AMB.json');
+  data = await resMalla.json();
+  colors = await resColors.json();
+  generarMalla();
+}
 
-  cursos.forEach((ciclo, index) => {
+// Ver si los requisitos están cumplidos
+function requisitosCumplidos(reqs) {
+  return reqs.every(cod => estadoCursos[cod] === 'A');
+}
+
+// Dibujar la malla
+function generarMalla() {
+  for (let i = 1; i <= CICLOS; i++) {
+    const cicloKey = 's' + i;
+    const cursos = data[cicloKey] || [];
+
     const divCiclo = document.createElement('div');
-    divCiclo.classList.add('ciclo');
-    const titulo = document.createElement('h3');
-    titulo.textContent = `S${index + 1}`;
-    divCiclo.appendChild(titulo);
+    divCiclo.className = 'ciclo';
+    divCiclo.innerHTML = `<h2>S${i}</h2>`;
 
-    ciclo.forEach(curso => {
+    cursos.forEach(curso => {
+      const [nombre, codigo, _, __, tipo, prereq] = curso;
+
       const divCurso = document.createElement('div');
-      divCurso.classList.add('curso', curso.tipo);
-      divCurso.textContent = `${curso.codigo} - ${curso.nombre}`;
-      divCurso.dataset.codigo = curso.codigo;
+      divCurso.className = 'curso pendiente';
+      divCurso.innerText = `${codigo} - ${nombre}`;
 
+      // Color por tipo
+      divCurso.style.borderLeftColor = colors[tipo]?.[0] || "#999";
+
+      // Si el curso tiene muchos hijos, ponle llama 🔥
+      const desbloquea = contarHijos(codigo);
+      if (desbloquea >= 5) {
+        divCurso.classList.add('relevante');
+      }
+
+      // Guardar estado inicial
+      estadoCursos[codigo] = 'P';
+
+      // Si ya está desbloqueado, marcarlo visualmente
+      if (prereq.length === 0) {
+        divCurso.classList.add('desbloqueado');
+      }
+
+      // Click para cambiar estado
       divCurso.addEventListener('click', () => {
-        divCurso.classList.toggle('aprobado');
+        const actual = estadoCursos[codigo];
+        let nuevoEstado = 'P';
+        if (actual === 'P') nuevoEstado = 'E';
+        else if (actual === 'E') nuevoEstado = 'A';
+        else nuevoEstado = 'P';
+
+        estadoCursos[codigo] = nuevoEstado;
+        actualizarColores();
       });
 
       divCiclo.appendChild(divCurso);
     });
 
-    malla.appendChild(divCiclo);
+    mallaDiv.appendChild(divCiclo);
+  }
+}
+
+// Contar cuántos cursos dependen de este
+function contarHijos(cod) {
+  let count = 0;
+  Object.values(data).forEach(cursos => {
+    cursos.forEach(curso => {
+      if (curso[5].includes(cod)) {
+        count++;
+      }
+    });
+  });
+  return count;
+}
+
+// Cambiar color según estado actual
+function actualizarColores() {
+  document.querySelectorAll('.curso').forEach(div => {
+    const codigo = div.innerText.split(' - ')[0];
+    div.classList.remove('aprobado', 'en-curso', 'pendiente');
+
+    const estado = estadoCursos[codigo];
+    if (estado === 'A') div.classList.add('aprobado');
+    else if (estado === 'E') div.classList.add('en-curso');
+    else div.classList.add('pendiente');
+
+    // Ver si ahora cumple los requisitos para desbloquearse
+    const curso = buscarCursoPorCodigo(codigo);
+    if (curso && requisitosCumplidos(curso[5])) {
+      div.classList.add('desbloqueado');
+    } else {
+      div.classList.remove('desbloqueado');
+    }
   });
 }
 
-cargarData();
+// Buscar curso por código
+function buscarCursoPorCodigo(cod) {
+  for (let key in data) {
+    const encontrado = data[key].find(c => c[1] === cod);
+    if (encontrado) return encontrado;
+  }
+  return null;
+}
+
+cargarDatos();
