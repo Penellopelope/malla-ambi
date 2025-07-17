@@ -85,3 +85,9 @@ h1 {
 .curso.desbloqueado {
   border: 2px dashed #3f51b5;
 }
+.curso.resaltado {
+  box-shadow: 0 0 8px 4px rgba(255, 165, 0, 0.6);
+  transform: scale(1.03);
+  transition: all 0.3s;
+}
+
