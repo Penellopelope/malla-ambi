@@ -3,7 +3,7 @@ const mallaDiv = document.getElementById('malla');
 
 let data = {};
 let colors = {};
-let estadoCursos = {}; // Guardar estado: Aprobado, En curso, Pendiente
+let estadoCursos = {};
 
 // Cargar archivos JSON
 async function cargarDatos() {
@@ -11,15 +11,21 @@ async function cargarDatos() {
   const resColors = await fetch('data/colors_AMB.json');
   data = await resMalla.json();
   colors = await resColors.json();
+
+  // Restaurar progreso guardado
+  const saved = localStorage.getItem('estadoCursos');
+  if (saved) estadoCursos = JSON.parse(saved);
+
   generarMalla();
+  actualizarColores();
 }
 
-// Ver si los requisitos están cumplidos
+// Verificar si se cumplen los requisitos
 function requisitosCumplidos(reqs) {
   return reqs.every(cod => estadoCursos[cod] === 'A');
 }
 
-// Dibujar la malla
+// Generar visualmente la malla
 function generarMalla() {
   for (let i = 1; i <= CICLOS; i++) {
     const cicloKey = 's' + i;
@@ -33,36 +39,37 @@ function generarMalla() {
       const [nombre, codigo, _, __, tipo, prereq] = curso;
 
       const divCurso = document.createElement('div');
-      divCurso.className = 'curso pendiente';
+      divCurso.className = 'curso';
+      divCurso.dataset.codigo = codigo;
       divCurso.innerText = `${codigo} - ${nombre}`;
-
-      // Color por tipo
       divCurso.style.borderLeftColor = colors[tipo]?.[0] || "#999";
 
-      // Si el curso tiene muchos hijos, ponle llama 🔥
-      const desbloquea = contarHijos(codigo);
-      if (desbloquea >= 5) {
-        divCurso.classList.add('relevante');
+      if (contarHijos(codigo) >= 5) {
+        divCurso.classList.add('relevante'); // 🔥
       }
 
-      // Guardar estado inicial
-      estadoCursos[codigo] = 'P';
+      // Estado inicial
+      if (!estadoCursos[codigo]) estadoCursos[codigo] = 'P';
 
-      // Si ya está desbloqueado, marcarlo visualmente
+      // Si no tiene prerequisitos, desbloqueado
       if (prereq.length === 0) {
         divCurso.classList.add('desbloqueado');
       }
 
-      // Click para cambiar estado
+      // Cambiar estado al hacer click
       divCurso.addEventListener('click', () => {
         const actual = estadoCursos[codigo];
-        let nuevoEstado = 'P';
-        if (actual === 'P') nuevoEstado = 'E';
-        else if (actual === 'E') nuevoEstado = 'A';
-        else nuevoEstado = 'P';
-
-        estadoCursos[codigo] = nuevoEstado;
+        estadoCursos[codigo] = actual === 'P' ? 'E' : actual === 'E' ? 'A' : 'P';
         actualizarColores();
+        guardarProgreso();
+      });
+
+      // Hover para resaltar hijos desbloqueables
+      divCurso.addEventListener('mouseenter', () => {
+        resaltarHijos(codigo, true);
+      });
+      divCurso.addEventListener('mouseleave', () => {
+        resaltarHijos(codigo, false);
       });
 
       divCiclo.appendChild(divCurso);
@@ -72,7 +79,12 @@ function generarMalla() {
   }
 }
 
-// Contar cuántos cursos dependen de este
+// Guardar progreso en el navegador
+function guardarProgreso() {
+  localStorage.setItem('estadoCursos', JSON.stringify(estadoCursos));
+}
+
+// Contar cuántos cursos desbloquea este
 function contarHijos(cod) {
   let count = 0;
   Object.values(data).forEach(cursos => {
@@ -85,28 +97,40 @@ function contarHijos(cod) {
   return count;
 }
 
-// Cambiar color según estado actual
+// Resalta o quita el resaltado de hijos de un curso
+function resaltarHijos(codigo, resaltar) {
+  Object.values(data).forEach(cursos => {
+    cursos.forEach(curso => {
+      if (curso[5].includes(codigo)) {
+        const hijo = document.querySelector(`[data-codigo="${curso[1]}"]`);
+        if (hijo) {
+          hijo.classList.toggle('resaltado', resaltar);
+        }
+      }
+    });
+  });
+}
+
+// Actualiza visualmente todos los cursos según estado
 function actualizarColores() {
   document.querySelectorAll('.curso').forEach(div => {
-    const codigo = div.innerText.split(' - ')[0];
-    div.classList.remove('aprobado', 'en-curso', 'pendiente');
+    const codigo = div.dataset.codigo;
+    div.classList.remove('aprobado', 'en-curso', 'pendiente', 'desbloqueado');
 
     const estado = estadoCursos[codigo];
-    if (estado === 'A') div.classList.add('aprobado');
-    else if (estado === 'E') div.classList.add('en-curso');
-    else div.classList.add('pendiente');
+    div.classList.add(
+      estado === 'A' ? 'aprobado' :
+      estado === 'E' ? 'en-curso' : 'pendiente'
+    );
 
-    // Ver si ahora cumple los requisitos para desbloquearse
     const curso = buscarCursoPorCodigo(codigo);
     if (curso && requisitosCumplidos(curso[5])) {
       div.classList.add('desbloqueado');
-    } else {
-      div.classList.remove('desbloqueado');
     }
   });
 }
 
-// Buscar curso por código
+// Buscar curso por su código
 function buscarCursoPorCodigo(cod) {
   for (let key in data) {
     const encontrado = data[key].find(c => c[1] === cod);
