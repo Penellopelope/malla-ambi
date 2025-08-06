@@ -1,0 +1,80 @@
+{
+  "s1": [
+    ["Administración General", "EP1055", 3, 4, "OB", [], "A"],
+    ["Análisis Matemático I", "CC1032", 3, 4, "G", [], "A"],
+    ["Curso de Deportes o Actividades Culturales", "DEP", 2, 0, "G", [], "A"],
+    ["Ecología General", "CC1024", 3, 4, "G", [], "A"],
+    ["Introducción a la Ciencia de Datos", "EP1053", 3, 4, "OB", [], "A"],
+    ["Química General", "CC1031", 3, 4, "G", [], "A"],
+    ["Sociedad y Cultura Peruana", "EP1049", 2, 2, "G", [], "A"]
+  ],
+  "s2": [
+    ["Análisis Matemático II", "CC2073", 3, 4, "G", ["CC1032"], "A"],
+    ["Economía General", "EP1050", 3, 4, "G", [], "A"],
+    ["Física General", "CC1030", 3, 4, "G", [], "A"],
+    ["Herramientas de Gestión Empresarial", "EP2092", 3, 4, "OB", ["EP1055"], "A"],
+    ["Lenguaje y Comunicación", "EP1051", 2, 3, "G", [], "A"],
+    ["Perú en el Contexto Internacional", "EP2086", 2, 2, "G", [], "A"],
+    ["Técnicas de Exploración de Datos", "EP2091", 3, 4, "OB", ["EP1053"], "A"]
+  ],
+  "s3": [
+    ["Álgebra Matricial", "CC4036", 4, 5, "OB", ["CC2073"], "A"],
+    ["Estadística General", "EP2085", 3, 4, "OB", ["CC2073"], "A"],
+    ["Ingeniería de Procesos", "EP2095", 4, 5, "OB", ["EP2091"], "A"],
+    ["Lenguaje de Programación I", "EP2025", 4, 5, "OB", ["EP1053"], "A"],
+    ["Matemáticas Discretas", "CC3106", 4, 5, "OB", ["CC2073"], "A"],
+    ["Redacción y Argumentación", "EP1052", 2, 2, "G", ["EP1051"], "A"]
+  ],
+  "s4": [
+    ["Análisis Estadístico", "EP2081", 4, 5, "OB", ["EP2085"], "A"],
+    ["Ética y Ciudadanía", "EP2088", 2, 2, "G", [], "A"],
+    ["Lenguaje de Programación II", "EP3035", 4, 5, "OB", ["EP2025"], "A"],
+    ["Metodología de la Investigación", "EP2087", 2, 2, "G", ["EP2085"], "A"],
+    ["Métodos de Optimización", "EP4183", 4, 5, "OB", ["CC4036"], "A"],
+    ["Sistemas de Gestión de Base de Datos I", "EP3190", 4, 5, "OB", ["EP2025", "EP2095"], "A"]
+  ],
+  "s5": [
+    ["Análisis de Regresión", "EP6003", 4, 5, "OB", ["CC4036", "EP2085"], "A"],
+    ["Cálculo de Probabilidades", "EP3010", 4, 5, "OB", ["EP2081"], "A"],
+    ["Diseños Experimentales I", "EP3168", 4, 5, "OB", ["EP2081"], "A"],
+    ["Estrategias de Muestreo", "EP3191", 4, 5, "OB", ["EP2085"], "A"],
+    ["Lenguaje de Programación III", "EP3036", 4, 5, "OB", ["EP3035"], "A"]
+  ],
+  "s6": [
+    ["Algoritmia", "EP4202", 4, 5, "OB", ["CC4036"], "A"],
+    ["Diseños Experimentales II", "EP3170", 4, 5, "OB", ["EP3168"], "A"],
+    ["Inferencia Estadística", "EP4041", 4, 5, "OB", ["EP3010"], "A"],
+    ["Sistemas de Gestión de Base de Datos II", "EP4184", 4, 5, "OB", ["EP3036", "EP3190"], "A"],
+    ["Técnicas Multivariadas", "EP4065", 4, 5, "OB", ["EP6003"], "A"]
+  ],
+  "s7": [
+    ["Estadística Bayesiana", "EP4066", 4, 5, "OB", ["EP4041"], "A"],
+    ["Estadística Computacional", "EP5123", 4, 5, "OB", ["EP4202"], "A"],
+    ["Marketing", "EP4204", 3, 4, "OB", ["EP2092"], "A"],
+    ["Modelos Lineales I", "EP4150", 4, 5, "OB", ["EP4041"], "A"],
+    ["Sistemas de Información Gerencial", "EP4203", 4, 5, "OB", ["EP4184"], "A"]
+  ],
+  "s8": [
+    ["Estadística No Paramétrica", "EP4146", 4, 5, "OB", [], "A"],
+    ["Gestión Estratégica de Datos", "EP4188", 4, 5, "OB", ["EP4203"], "A"],
+    ["Investigación de Mercados", "EP4187", 3, 4, "OB", ["EP4065", "EP4204"], "A"],
+    ["Máquinas de Aprendizaje", "EP4192", 4, 5, "OB", ["EP4065"], "A"],
+    ["Modelos Lineales II", "EP4185", 4, 5, "OB", ["EP4150"], "A"],
+    ["Seminario en Estadística Informática I", "EP4181", 1, 1, "OB", [], "A"]
+  ],
+  "s9": [
+    ["Análisis de Series de Tiempo", "EP5001", 4, 5, "OB", [], "A"],
+    ["Ciencias de Datos I", "EP4189", 4, 5, "OB", ["EP4188"], "A"],
+    ["Curso Electivo de Carrera", "ELC1", 3, 3, "EL", [], "A"],
+    ["Estadística Espacial", "EP4191", 3, 4, "OB", [], "A"],
+    ["Gestión de Proyectos de Información", "EP4190", 4, 5, "OB", [], "A"],
+    ["Prácticas Pre-Profesionales", "PP0001", 2, 0, "OB", [], "A"],
+    ["Seminario en Estadística Informática II", "EP5117", 1, 1, "OB", ["EP4181"], "A"]
+  ],
+  "s10": [
+    ["Ciencias de Datos II", "EP5120", 4, 5, "OB", ["EP4189"], "A"],
+    ["Curso Electivo de Carrera", "ELC2", 9, 9, "EL", [], "A"],
+    ["Seminario en Estadística Informática III", "EP5124", 4, 5, "OB", ["EP5117"], "A"],
+    ["Tecnologías Emergentes", "EP5121", 4, 5, "OB", ["EP4192"], "A"]
+  ]
+}
